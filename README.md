@@ -30,6 +30,8 @@ The MIT npm package remains fully usable offline with no account. An optional ho
 - Product-specific Paddle sandbox catalog is not connected yet, so payment buttons remain disabled
 - Hosted Docker budget: 0.25 vCPU / 256 MiB RAM / 64 PIDs
 
+Sandbox preview: https://form-path.eztoolgo.duckdns.org
+
 See [hosted/README.md](hosted/README.md) for the current implementation and verified safety model.
 
 ## Security and limitations

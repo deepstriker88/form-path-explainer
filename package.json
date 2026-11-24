@@ -1,0 +1,75 @@
+{
+  "name": "form-path-explainer",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Offline form and JSON validation with precise field paths, schema preflight, and bounded JSONL streaming",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js",
+      "default": "./src/index.js"
+    },
+    "./http": {
+      "types": "./src/http.d.ts",
+      "import": "./src/http.js",
+      "default": "./src/http.js"
+    },
+    "./infer": {
+      "types": "./src/infer.d.ts",
+      "import": "./src/infer.js",
+      "default": "./src/infer.js"
+    },
+    "./report": {
+      "types": "./src/report.d.ts",
+      "import": "./src/report.js",
+      "default": "./src/report.js"
+    },
+    "./stream": {
+      "types": "./src/stream.d.ts",
+      "import": "./src/stream.js",
+      "default": "./src/stream.js"
+    }
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "files": [
+    "src",
+    "bin",
+    "README.md",
+    "CHANGELOG.md",
+    "SECURITY.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "keywords": [
+    "form-validation",
+    "json-validation",
+    "json-pointer",
+    "field-errors",
+    "schema-validation",
+    "jsonl",
+    "offline",
+    "privacy",
+    "cli"
+  ],
+  "sideEffects": false,
+  "bin": {
+    "form-path-explainer": "bin/cli.js"
+  },
+  "types": "./src/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deepstriker88/form-path-explainer.git"
+  },
+  "homepage": "https://github.com/deepstriker88/form-path-explainer#readme",
+  "bugs": {
+    "url": "https://github.com/deepstriker88/form-path-explainer/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

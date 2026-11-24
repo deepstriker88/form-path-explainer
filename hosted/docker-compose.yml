@@ -1,3 +1,5 @@
+name: form-path-explainer-hosted
+
 services:
   form-path-cloud:
     build:
@@ -35,6 +37,8 @@ services:
 
 volumes:
   form-path-cloud-data:
+    name: hosted_form-path-cloud-data
+    external: true
 
 networks:
   my_network:

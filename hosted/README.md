@@ -11,6 +11,7 @@ Optional hosted API for the free MIT-licensed `form-path-explainer` package
 ## Billing status
 - Default environment: Paddle sandbox
 - Live money: disabled until separate explicit approval
+- Existing account-level Paddle default payment link is preserved during sandbox bootstrap
 - Free local npm package remains fully usable without this service
 - Pro: $3.99/month, 20,000 API calls/month
 - Team: $8.99/month, 200,000 API calls/month

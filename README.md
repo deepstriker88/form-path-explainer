@@ -21,6 +21,17 @@ console.log(validateForm({email:'bad'},{type:'object',required:['email'],propert
 ## Supported subset
 Types: object, array, string, number, boolean. Required fields, properties, array items, email and basic hostname syntax, string lengths, numeric bounds, integer checks, array cardinality, primitive enums, and optional strict object fields (`additionalProperties: false`). Not a JSON Schema implementation.
 
+## Optional hosted API
+The MIT npm package remains fully usable offline with no account. An optional hosted layer is maintained in hosted/ for managed API keys, quotas and Paddle-backed subscription entitlement.
+
+- Pro preview: $3.99/month — 20,000 hosted calls
+- Team preview: $8.99/month — 200,000 hosted calls
+- Paddle environment defaults to sandbox and live billing requires a separate explicit gate
+- Product-specific Paddle sandbox catalog is not connected yet, so payment buttons remain disabled
+- Hosted Docker budget: 0.25 vCPU / 256 MiB RAM / 64 PIDs
+
+See [hosted/README.md](hosted/README.md) for the current implementation and verified safety model.
+
 ## Security and limitations
 Local-only with no dependencies or network calls. JSON text is limited to 1 MiB each, nesting to 12 levels, arrays to 100 elements, and at most 10,000 visited nodes per validation. Shared schema objects are checked once and independently referenced object values are bounded by the visit budget. Only the first 100 errors are returned. Email syntax checking does not verify mailbox existence. Schema property count is limited to 100; duplicate required keys and cyclic input objects are rejected. Schemas are checked for cycles and accessor properties but are not a substitute for authorization rules. Prototype-related keys are flagged, not executed.
 

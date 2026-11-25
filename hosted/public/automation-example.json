@@ -1,0 +1,17 @@
+{
+  "before": {
+    "type": "object"
+  },
+  "after": {
+    "type": "object",
+    "required": [
+      "email"
+    ]
+  },
+  "fixtures": [
+    {},
+    {
+      "email": "user@example.com"
+    }
+  ]
+}

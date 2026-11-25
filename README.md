@@ -120,3 +120,10 @@ Run one local command with previous and proposed rule files and an array of 1–
     form-path-regression previous.json proposed.json fixtures.json
 
 The report distinguishes newly rejected, newly accepted and unchanged records by zero-based fixture index. It does not echo values, paths or schema keys. Exit 1 means an observed acceptance change in either direction; exit 2 means invalid input or a validation limit/indeterminate result. Each input file is capped at 1 MiB. Only the existing supported rule subset is accepted, not arbitrary JSON Schema. No claim of universal schema compatibility: results apply only to supplied fixtures. This source includes the feature. Check the npm registry for the published version before installation; a staging placeholder is not a usable release.
+
+
+### Optional managed automation runner (next hosted release)
+
+Compare before and after validation rules against the same JSON fixtures. Two calls per fixture. A changed or indeterminate verdict blocks CI.
+
+Download the runner and synthetic input from /automation. Run node automation.mjs automation-example.json locally to preview the call count; pass --send with EZTOOLGO_API_KEY configured to submit checks to the existing managed API. No subscription price, authentication, entitlement, or billing changes. The runner does not persist user input or keys and outputs a redacted release verdict. Default 100 calls, explicit maximum 500. No automatic retries. Review candidate; not deployed.

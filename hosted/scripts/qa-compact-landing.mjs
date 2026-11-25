@@ -45,6 +45,14 @@ try{
   assert.ok(await page.locator("#result-panel").isVisible());
   assert.notEqual(await page.locator("#status").getAttribute("data-state"),"idle");
   assert.ok(await page.locator("#copy-result").isEnabled());
+  const sourceJump=page.locator(".issue-location").first();
+  assert.ok(await sourceJump.isVisible());
+  const formReport=JSON.parse(await page.locator("#result").textContent());
+  const target=formReport.errors.find(e=>e.location);
+  assert.ok(target);await sourceJump.click();
+  assert.equal(await page.evaluate(()=>document.activeElement.id),"value");
+  assert.equal(await page.locator("#value").evaluate(el=>el.selectionStart),target.location.offset);
+
   await page.locator("#copy-result").click();
   const copied=await page.evaluate(()=>navigator.clipboard.readText());
   assert.match(copied,/Issues found|No reported issues/);

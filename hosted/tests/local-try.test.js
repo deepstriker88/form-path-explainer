@@ -13,7 +13,7 @@ test('browser module uses original core; no input transport; bounds',async()=>{
  await writeFile(path.join(dir,'tool.js'),tool);
  await writeFile(path.join(dir,'core.js'),await readFile(new URL('../../src/index.js',import.meta.url)));
  await writeFile(path.join(dir,'strict-json.js'),await readFile(new URL('../../src/strict-json.js',import.meta.url)));
- const {check}=await import(pathToFileURL(path.join(dir,'tool.js')));
+ const {check,readLocalText}=await import(pathToFileURL(path.join(dir,'tool.js')));
  assert.equal(check({value:'{"email":"bad"}',schema:'{"type":"object","properties":{"email":{"type":"string","format":"email"}}}'}).valid,false);
   assert.equal(check({value:'{"email":"user@example.com"}',schema:'{"type":"object","properties":{"email":{"type":"string","format":"email"}}}'}).valid,true);
  assert.throws(()=>check({value:'{"x":1,"x":2}',schema:'{"type":"object"}'}),SyntaxError);
@@ -24,5 +24,10 @@ test('browser module uses original core; no input transport; bounds',async()=>{
  assert.equal(check({value:'{"x":"a\\\\b"}',schema:'{"type":"object","properties":{"x":{"type":"string"}}}'}).valid,true);
  assert.throws(()=>check({value:'x'.repeat(65537),schema:'{}',mode:'single',format:'email'}),RangeError);
  assert.throws(()=>check({value:'한'.repeat(22000),schema:'{}',mode:'single',format:'email'}),RangeError);
+ assert.equal(await readLocalText(new Blob(['한글'])), '한글');
+ await assert.rejects(()=>readLocalText(new Blob([new Uint8Array([0xff])])),TypeError);
+ await assert.rejects(()=>readLocalText({size:65537,arrayBuffer(){throw Error('must not read oversized file');}}),RangeError);
+ await assert.rejects(()=>readLocalText({size:1,arrayBuffer:async()=>new ArrayBuffer(2)}),RangeError);
+ assert.equal((await readLocalText(new Blob(['x'.repeat(65536)]))).length,65536);
  } finally {await rm(dir,{recursive:true,force:true});}
 });

@@ -73,3 +73,13 @@ test('content length header mismatch cannot bypass byte limit',async()=>{
  const r=await handler({maxBytes:30})(new Request(url,{method:'POST',headers:{'content-type':'application/json','content-length':'1'},body}));
  assert.equal(r.status,413);
 });
+
+test('declared body length must be decimal and match received bytes',async()=>{
+ const body=JSON.stringify({schema,value:{age:20}});
+ for(const length of ['0x10','1e2','+12','',String(Buffer.byteLength(body)-1),String(Buffer.byteLength(body)+1)]){
+  const r=await handler()(new Request(url,{method:'POST',headers:{'content-type':'application/json','content-length':length},body}));
+  assert.equal(r.status,400,length);
+ }
+ const good=await handler()(new Request(url,{method:'POST',headers:{'content-type':'application/json','content-length':String(Buffer.byteLength(body))},body}));
+ assert.equal(good.status,200);
+});

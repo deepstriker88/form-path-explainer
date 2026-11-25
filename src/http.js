@@ -11,11 +11,12 @@ const reply=(status,payload,more={})=>new Response(JSON.stringify(payload),{stat
 async function readBoundedRequest(request,limit){
  const rawLength=request.headers.get('content-length');
  if(rawLength!==null){
+  if(!/^\d+$/.test(rawLength))throw new TypeError('invalid content length');
   const claimed=Number(rawLength);
   if(!Number.isSafeInteger(claimed)||claimed<0)throw new TypeError('invalid content length');
   if(claimed>limit)throw new RangeError('too large');
  }
- if(!request.body)return '';
+ if(!request.body){if(rawLength!==null&&Number(rawLength)!==0)throw new TypeError('content length mismatch');return '';}
  const reader=request.body.getReader(),chunks=[];let total=0;
  try{
   while(true){
@@ -27,6 +28,7 @@ async function readBoundedRequest(request,limit){
   }
  }catch(e){try{await reader.cancel();}catch{}throw e;}
  finally{reader.releaseLock();}
+ if(rawLength!==null&&Number(rawLength)!==total)throw new TypeError('content length mismatch');
  const data=new Uint8Array(total);let offset=0;
  for(const chunk of chunks){data.set(chunk,offset);offset+=chunk.length;}
  return new TextDecoder('utf-8',{fatal:true}).decode(data);

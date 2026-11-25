@@ -111,3 +111,12 @@ Defaults: at most 10,000 records and 1 MiB per line; configurable hard caps
 JSON produces `INVALID_JSON` without exposing submitted text, and record
 results include 0-based `index` and 1-based `line`. No record contents are
 retained by the validator. Do not treat this validation as authentication.
+
+
+## Compare real fixture acceptance across rule revisions (next-release candidate)
+
+Run one local command with previous and proposed rule files and an array of 1–100 JSON fixtures:
+
+    form-path-regression previous.json proposed.json fixtures.json
+
+The report distinguishes newly rejected, newly accepted and unchanged records by zero-based fixture index. It does not echo values, paths or schema keys. Exit 1 means an observed acceptance change in either direction; exit 2 means invalid input or a validation limit/indeterminate result. Each input file is capped at 1 MiB. Only the existing supported rule subset is accepted, not arbitrary JSON Schema. No claim of universal schema compatibility: results apply only to supplied fixtures. This source includes the feature. Check the npm registry for the published version before installation; a staging placeholder is not a usable release.

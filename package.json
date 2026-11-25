@@ -28,6 +28,11 @@
       "types": "./src/stream.d.ts",
       "import": "./src/stream.js",
       "default": "./src/stream.js"
+    },
+    "./regression": {
+      "types": "./src/regression.d.ts",
+      "import": "./src/regression.js",
+      "default": "./src/regression.js"
     }
   },
   "scripts": {
@@ -58,7 +63,8 @@
   ],
   "sideEffects": false,
   "bin": {
-    "form-path-explainer": "bin/cli.js"
+    "form-path-explainer": "bin/cli.js",
+    "form-path-regression": "bin/regression.js"
   },
   "types": "./src/index.d.ts",
   "repository": {

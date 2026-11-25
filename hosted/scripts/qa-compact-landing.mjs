@@ -124,6 +124,25 @@ try{
    assert.notEqual(await page.locator("#status").getAttribute("data-state"),"incomparable");
    assert.ok((await page.locator("#result").textContent()).length>2);
    if(width===390||width===1440)await page.screenshot({path:"qa-screenshots/"+route.slice(1)+"-"+width+"x"+height+".png",fullPage:true});
+   if(route==="/review"&&width===390){
+    const before=JSON.stringify({type:"object",properties:{id:{type:"string"},email:{type:"string"}},required:["id"],additionalProperties:false});
+    const after=JSON.stringify({...JSON.parse(before),required:["id","email"]});
+    await page.locator("#before").fill(before);await page.locator("#after").fill(after);
+    await page.locator("#fixtures").fill('[{"id":"PRIVATE_FIXTURE"}]');
+    page.once("dialog",d=>d.dismiss());await page.locator("#witness").click();
+    assert.equal(await page.locator("#fixtures").inputValue(),'[{"id":"PRIVATE_FIXTURE"}]');
+    page.once("dialog",d=>d.accept());await page.locator("#witness").click();
+    assert.deepEqual(JSON.parse(await page.locator("#fixtures").inputValue()),[{id:""}]);
+    assert.equal(await page.locator("#status").getAttribute("data-state"),"fail");
+    const witnessReport=JSON.parse(await page.locator("#result").textContent());
+    assert.equal(witnessReport.counts.newlyRejected,1);
+    assert.doesNotMatch(JSON.stringify(witnessReport),/PRIVATE_FIXTURE|email/);
+    await page.locator("#after").fill(before);
+    const preserved=await page.locator("#fixtures").inputValue();
+    await page.locator("#witness").click();
+    assert.equal(await page.locator("#fixtures").inputValue(),preserved);
+    assert.match(await page.locator("#file-status").textContent(),/No verified example/);
+   }
    const input=page.locator("textarea").first();
    await input.fill("invalid fixture");
    assert.equal(await page.locator("#status").getAttribute("data-state"),"idle");

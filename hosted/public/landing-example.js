@@ -5,4 +5,5 @@ function check(k){const r=validateJson(JSON.stringify(k==="quantity"?{items:[{qu
 const select=document.getElementById("sample-select"),button=document.getElementById("sample-run"),output=document.getElementById("sample-output");
 button.addEventListener("click",()=>{try{const r=check(select.value);output.textContent=r.text;output.dataset.state=r.ok?"pass":"fail";}catch{output.textContent="Example could not be checked.";output.dataset.state="fail";}});
 select.addEventListener("change",()=>{output.textContent="Run the selected example.";delete output.dataset.state;});
+if(matchMedia("(max-width:420px)").matches)document.getElementById("sample-panel").open=false;
 button.disabled=false;

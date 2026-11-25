@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {compareFormFixtures} from '../src/regression.js';
+import {compareFormFixtures,suggestRequiredWitness} from '../src/regression.js';
 import {mkdtempSync,writeFileSync,rmSync} from 'node:fs';
 import {spawnSync} from 'node:child_process';
 import {tmpdir} from 'node:os';
@@ -49,4 +49,21 @@ test('regression rejects ambiguous and non-finite fixtures or schemas',()=>{
 test('regression preserves valid escaped string content',()=>{
  const r=compareFormFixtures('["a\\u0062"]',old,next);
  assert.equal(r.counts.newlyRejected,1);
+});
+
+test('finds a verified required-field counterexample without copying enum values',()=>{
+ const before={type:'object',properties:{id:{type:'string'},'new/~key':{type:'integer'}},required:['id'],additionalProperties:false};
+ const after={...before,required:['id','new/~key']};
+ const w=suggestRequiredWitness(j(before),j(after));
+ assert.equal(w.status,'found');assert.equal(w.addedRequiredCount,1);
+ assert.equal(j(w.fixture),j({id:''}));
+ assert.equal(compareFormFixtures(j([w.fixture]),j(before),j(after)).counts.newlyRejected,1);
+ assert.deepEqual(suggestRequiredWitness(j(after),j(before)),{status:'not_proven'});
+ assert.deepEqual(suggestRequiredWitness(j({...before,properties:{id:{type:'string',enum:['PRIVATE']}}}),j(after)),{status:'not_proven'});
+ assert.deepEqual(suggestRequiredWitness(j({type:'object',required:['id'],additionalProperties:false}),j(after)),{status:'not_proven'});
+});
+test('never reports unsupported rules or unsuccessful generation as proven',()=>{
+ assert.deepEqual(suggestRequiredWitness(old,next),{status:'not_proven'});
+ assert.throws(()=>suggestRequiredWitness('{"type":"object","type":"string"}',next),SyntaxError);
+ assert.throws(()=>suggestRequiredWitness(old,j({type:'object',pattern:'x'})),TypeError);
 });

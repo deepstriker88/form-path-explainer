@@ -1,4 +1,4 @@
-import {compareFormFixtures} from "./regression.js";
+import {compareFormFixtures,suggestRequiredWitness} from "./regression.js";
 const limits={before:1048576,after:1048576,fixtures:1048576};
 const sample={before:JSON.stringify({type:"string",minLength:2},null,2),after:JSON.stringify({type:"string",minLength:3},null,2),fixtures:JSON.stringify(["a","ab","abc"],null,2)};
 const reportName="form-rule-review.json";
@@ -48,7 +48,7 @@ function display(r){
  result.textContent=JSON.stringify(r,null,2);technical.hidden=false;technical.open=false;$("download").disabled=false;
 }
 function setBusy(){
- $("run").disabled=pending>0;$("example").disabled=pending>0;
+ $("run").disabled=pending>0;$("example").disabled=pending>0;$("witness").disabled=pending>0;
  for(const id of ids)$(id+"-file").disabled=pending>0;
 }
 for(const input of inputs){
@@ -87,6 +87,17 @@ $("example").addEventListener("click",()=>{
  if(pending)return;
  if(inputs.some(i=>i.value)&&!window.confirm("Replace current inputs with the example?"))return;
  for(const input of inputs)input.value=sample[input.id];$("run").click();
+});
+$("witness").addEventListener("click",()=>{
+ if(pending)return;
+ try{
+  const w=suggestRequiredWitness($("before").value,$("after").value);
+  if(w.status!=="found"){fileStatus.textContent="No verified example found in the supported subset. Keep your fixtures and compare them normally.";return;}
+  if($("fixtures").value&&!window.confirm("Replace the fixture array with one synthetic, verified missing-field example?"))return;
+  $("fixtures").value=JSON.stringify([w.fixture],null,2);
+  $("run").click();
+  fileStatus.textContent="Synthetic example verified: accepted before, rejected after. No user values copied.";
+ }catch{fileStatus.textContent="Check the two supported rule schemas first; no fixture was changed.";}
 });
 $("clear").addEventListener("click",()=>{
  for(const input of inputs)input.value="";

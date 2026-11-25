@@ -34,3 +34,7 @@ document height, controls, sample pass/fail, no-input network transmission,
 sandbox billing refusal and modal keyboard dismissal. No Chromium installed
 on the Oracle host. Results pending until exact CI passes. No npm version
 change, public package republication or live billing switch.
+
+## Evidence correction and 320px compact review (2026-11-26)
+
+View More distinguishes actual supported validation and regression scope from Ajv and Zod without unsupported superiority claims. The review CLI instructions identify the published npm 0.1.0 package, whose registry integrity and tar inventory were checked. At 320x568, redundant proof badges and summary copy move into the detail section; primary actions, sample, price and legal links remain. The exact browser CI now gates initial vertical overflow at this size. Results pending exact-revision CI. No pricing, payment or npm republish changes.

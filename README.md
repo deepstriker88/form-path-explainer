@@ -120,3 +120,9 @@ Run one local command with previous and proposed rule files and an array of 1–
     form-path-regression previous.json proposed.json fixtures.json
 
 The report distinguishes newly rejected, newly accepted and unchanged records by zero-based fixture index. It does not echo values, paths or schema keys. Exit 1 means an observed acceptance change in either direction; exit 2 means invalid input or a validation limit/indeterminate result. Each input file is capped at 1 MiB. Only the existing supported rule subset is accepted, not arbitrary JSON Schema. No claim of universal schema compatibility: results apply only to supplied fixtures. This source includes the feature. Check the npm registry for the published version before installation; a staging placeholder is not a usable release.
+
+<!-- eztoolgo-voluntary-support:start -->
+## Support development
+
+If this tool saves you time, you can [buy me a coffee](https://buymeacoffee.com/eztoolgo). Voluntary support does not unlock features or purchase service access.
+<!-- eztoolgo-voluntary-support:end -->

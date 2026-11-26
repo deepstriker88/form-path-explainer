@@ -127,3 +127,9 @@ The report distinguishes newly rejected, newly accepted and unchanged records by
 Compare before and after validation rules against the same JSON fixtures. Two calls per fixture. A changed or indeterminate verdict blocks CI.
 
 Download the runner and synthetic input from /automation. Run node automation.mjs automation-example.json locally to preview the call count; pass --send with EZTOOLGO_API_KEY configured to submit checks to the existing managed API. No subscription price, authentication, entitlement, or billing changes. The runner does not persist user input or keys and outputs a redacted release verdict. Default 100 calls, explicit maximum 500. No automatic retries. Review candidate; not deployed.
+
+<!-- eztoolgo-voluntary-support:start -->
+## Support development
+
+If this tool saves you time, you can [buy me a coffee](https://buymeacoffee.com/eztoolgo). Voluntary support does not unlock features or purchase service access.
+<!-- eztoolgo-voluntary-support:end -->

@@ -36,7 +36,6 @@ h1{font-size:clamp(26px,3vw,36px)}
 .workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
 .panel{padding:16px;background:var(--surface);border:1px solid var(--line);border-radius:12px;min-width:0}
 .panel h2{margin-bottom:12px}
-.panel label{display:block;font-size:14px;font-weight:650;margin:12px 0 4px}
 .panel p{margin:8px 0;overflow-wrap:anywhere}
 .panel textarea{min-height:88px}
 .actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px}
@@ -49,11 +48,6 @@ h1{font-size:clamp(26px,3vw,36px)}
 #summary code{display:block;overflow-wrap:anywhere;word-break:break-word;font:inherit}
 #technical{margin-top:8px}
 main>.note{margin:12px 0}
-main>section.panel{margin-top:12px}
-main>section.panel:not(.cli-panel){padding:12px 16px}
-main>section.panel h2{font-size:16px;margin:0 0 4px}
-footer{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:16px;padding:8px 0;border-top:1px solid var(--line);font-size:14px}
-footer a{display:inline-flex;align-items:center;min-height:44px}
 .input-field{border-top:1px solid var(--line);padding:8px 0}
 .input-field label{margin:0 0 4px}.input-field textarea{min-height:88px}
 .limit{margin:0 0 4px!important}.file-label{font-size:14px;margin-top:8px!important}
@@ -72,14 +66,9 @@ input[type=file]::file-selector-button{min-height:44px;border:1px solid var(--co
 .quick .nav-actions a{font-size:14px}
 .quick header{margin:20px 0 12px;gap:4px}
 .quick header h1{font-size:clamp(26px,3.2vw,38px)}
-.quick .input-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px}
-.quick .input-grid>div{min-width:0}
-.quick .input-grid label{margin-top:0}
-.quick .panel>label:first-child{margin-top:0}
 .quick textarea{min-height:72px}
 .quick .actions{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:8px;margin-top:12px}
 .quick .actions button{padding:10px 12px}
-.quick #run{min-width:0}
 .quick .tool-info{margin-top:12px;font-size:14px;color:var(--muted)}
 .quick .tool-info summary{font-size:14px;font-weight:600}
 .quick .tool-info p{margin:4px 0 8px}
@@ -93,9 +82,9 @@ input[type=file]::file-selector-button{min-height:44px;border:1px solid var(--co
 .quick .input-note{font-size:14px;color:var(--muted);margin:4px 0 0}
 @media(min-width:761px){.quick .workspace{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}}
 @media(max-width:760px){.quick nav{min-height:44px}.quick header{margin:12px 0 8px}.quick .panel{padding:12px}.quick .private-label{margin-top:6px}.quick .actions{gap:6px}.quick .actions button{font-size:14px;padding:10px 8px}.quick .tool-info{margin-top:6px}}
-@media(max-width:400px){.quick nav{gap:0}.quick .nav-actions{gap:12px}.quick .nav-actions a{font-size:13px}.quick .product-name{font-size:14px}.quick header{margin:8px 0}.quick header p{font-size:15px}.quick .panel label{margin-top:8px}.quick .input-grid label{margin-top:0}.quick textarea{min-height:64px;padding:8px 10px}.quick .tool-info{margin-top:4px}.quick .private-label{font-size:13px}}
+@media(max-width:400px){.quick nav{gap:0}.quick .nav-actions{gap:12px}.quick .nav-actions a{font-size:13px}.quick .product-name{font-size:14px}.quick header{margin:8px 0}.quick header p{font-size:15px}.quick .panel label{margin-top:8px}.quick textarea{min-height:64px;padding:8px 10px}.quick .tool-info{margin-top:4px}.quick .private-label{font-size:13px}}
 .quick .field-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px}
-.quick .field-heading label{margin:0}
+.quick .field-heading label{margin:0;font-size:14px;font-weight:650}
 .quick .file-open{background:transparent;color:var(--accent);border-color:transparent;font-size:13px;padding:6px 8px;font-weight:600}
 .quick .file-open:not(:disabled):hover{background:var(--soft);color:var(--hover)}
 .quick .file-feedback{font-size:14px;color:var(--muted);margin:4px 0 0}
@@ -105,13 +94,10 @@ input[type=file]::file-selector-button{min-height:44px;border:1px solid var(--co
 @media(max-width:400px){.quick .brand-full{display:none}.quick .brand-short{display:inline}.quick nav{gap:4px;flex-wrap:nowrap}.quick .nav-actions{gap:8px;flex-wrap:nowrap}.quick .nav-actions a{white-space:nowrap}.quick .product-name{font-size:14px}.quick .actions{grid-template-columns:minmax(0,1fr) auto auto}.quick .actions button{padding-inline:6px}}
 .issue-location{display:inline-flex;min-height:44px;padding:6px 10px;background:transparent;color:var(--accent);border-color:var(--control);font-size:14px;font-weight:600;max-width:100%;white-space:normal}
 .issue-location:not(:disabled):hover{background:var(--bg);color:var(--hover)}
-.quick .nav-actions a{min-height:44px}
 .quick .file-open{white-space:nowrap;flex-shrink:0}
 .quick .field-heading label{min-width:0;overflow-wrap:anywhere}
-.quick .input-grid:has(#format-wrap[hidden]){grid-template-columns:minmax(0,1fr)}
-.quick .input-grid select{padding-inline:8px}
-@media(max-width:400px){.quick .nav-actions{gap:12px}.quick .brand-short{white-space:nowrap}.quick .input-grid{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}.quick .actions button{padding-inline:8px}}
-@media(max-width:300px){.quick nav,.quick .nav-actions{flex-wrap:wrap}.quick .actions{grid-template-columns:1fr}.quick .input-grid{grid-template-columns:1fr}}
+@media(max-width:400px){.quick .nav-actions{gap:12px}.quick .brand-short{white-space:nowrap}.quick .actions button{padding-inline:8px}}
+@media(max-width:300px){.quick nav,.quick .nav-actions{flex-wrap:wrap}.quick .actions{grid-template-columns:1fr}}
 @media(prefers-color-scheme:dark){
  button,.btn,.button-link{color:var(--on-accent)}
  button:not(:disabled):hover,.btn:hover,.button-link:hover{color:var(--on-accent)}
@@ -121,3 +107,7 @@ input[type=file]::file-selector-button{min-height:44px;border:1px solid var(--co
  .quick .result-actions button:not(:disabled):hover,.issue-location:not(:disabled):hover{background:var(--soft);color:var(--hover)}
 }
 .ez-plans{box-sizing:border-box;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px;width:min(440px,calc(100% - 24px));max-height:calc(100dvh - 24px);overflow:auto}.ez-plans::backdrop{background:#10162099}.ez-plans h2{font-size:22px;margin:0}.ez-plans p{margin:8px 0;color:var(--muted)}.ez-plans .ez-head,.ez-plans .ez-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.ez-plans .ez-row{padding:10px 0;border-top:1px solid var(--line);flex-wrap:wrap}.ez-plans .ez-row small{display:block;color:var(--muted)}.ez-plans .ez-links{display:flex;flex-wrap:wrap;gap:0 16px}.ez-plans .ez-links a{display:inline-flex;align-items:center;min-height:44px}.ez-plans .ez-continue{display:flex;align-items:center;justify-content:center;background:var(--accent);color:var(--on-accent);border-radius:8px;min-height:44px;text-decoration:none;padding:8px 12px;font-weight:650}.ez-plans button{background:var(--surface);color:var(--accent);border:1px solid var(--control);padding:8px 12px;min-height:44px;border-radius:8px}.ez-plans :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.desktop-empty{display:none}@media(min-width:1024px){main.quick{width:94%;max-width:none}.quick .workspace{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:stretch}.quick #value{min-height:clamp(120px,43vh,560px);max-height:75vh}.quick .panel:has(#schema) #value,.quick #schema{min-height:clamp(100px,23vh,300px);max-height:60vh}.quick #result-panel[hidden]+.desktop-empty{display:block}.quick #result-panel pre{max-height:50vh}.quick .panel{padding:20px}}@media(min-width:1600px){.quick .panel:has(#schema){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 16px;align-content:start}.quick .panel:has(#schema)>*{grid-column:1/-1}.quick .panel:has(#schema)>.field-heading:has(label[for=value]){grid-column:1;grid-row:1}.quick .panel:has(#schema)>#value{grid-column:1}.quick .panel:has(#schema)>.field-heading:has(label[for=schema]){grid-column:2;grid-row:1}.quick .panel:has(#schema)>:is(#value,#schema){grid-row:2;min-height:clamp(200px,46vh,600px)}.quick .panel:has(#schema)>#schema{grid-column:2}}
+
+@media(min-width:761px) and (max-width:1023px){.quick .workspace:has(#result-panel[hidden]){grid-template-columns:1fr}}

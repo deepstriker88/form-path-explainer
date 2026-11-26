@@ -1,13 +1,50 @@
-import {strictJson} from './strict-json.js';
-import {validateJson, explainError} from './core.js';
+import {strictJson, locateJsonPointers} from './strict-json.js';
+import {validateForm, inspectFormSchema, explainError} from './core.js';
 const LIMIT=65536;
 function bounded(s){if(typeof s!=='string'||s.length>LIMIT||new TextEncoder().encode(s).length>LIMIT)throw new RangeError('Input exceeds 64 KiB');}
+// Suggest a single close declared key only when that target is absent.
+// Scope is simple ASCII identifier typos; no automatic mutation or fuzzy guesses.
+function oneEdit(a,b){
+ if(a===b||Math.abs(a.length-b.length)>1)return false;
+ if(a.length===b.length){
+  const mismatches=[];for(let i=0;i<a.length;i++)if(a[i]!==b[i])mismatches.push(i);
+  return mismatches.length===1||(mismatches.length===2&&mismatches[1]===mismatches[0]+1&&a[mismatches[0]]===b[mismatches[1]]&&a[mismatches[1]]===b[mismatches[0]]);
+ }
+ if(a.length>b.length)[a,b]=[b,a];
+ let i=0;while(i<a.length&&a[i]===b[i])i++;
+ return a.slice(i)===b.slice(i+1);
+}
+const simpleKey=k=>typeof k==="string"&&/^[A-Za-z_][A-Za-z0-9_]{0,63}$/.test(k)&&!["__proto__","prototype","constructor"].includes(k);
+export function suggestUnknownKey(data,rules,pointer){
+ if(typeof pointer!=="string"||!pointer.startsWith("/"))return null;
+ const parts=pointer.slice(1).split("/").map(s=>s.replaceAll("~1","/").replaceAll("~0","~"));
+ const key=parts.pop();if(!simpleKey(key))return null;
+ for(const part of parts){
+  if(Array.isArray(data)&&rules?.type==="array"&&/^(0|[1-9][0-9]*)$/.test(part)&&Object.hasOwn(data,part)){data=data[Number(part)];rules=rules.items;}
+  else if(data&&typeof data==="object"&&!Array.isArray(data)&&rules?.type==="object"&&rules.properties&&Object.hasOwn(data,part)&&Object.hasOwn(rules.properties,part)){data=data[part];rules=rules.properties[part];}
+  else return null;
+ }
+ if(!data||typeof data!=="object"||Array.isArray(data)||rules?.type!=="object"||rules.additionalProperties!==false||!Object.hasOwn(data,key)||!rules.properties||Object.hasOwn(rules.properties,key))return null;
+ const candidates=Object.keys(rules.properties).filter(k=>simpleKey(k)&&oneEdit(key,k));
+ // Ambiguity includes an already present candidate; never suggest overwriting.
+ return candidates.length===1&&!Object.hasOwn(data,candidates[0])?candidates[0]:null;
+}
 export function check({value,schema,mode,format}){
   bounded(value);
   bounded(schema);
-  strictJson(value,{maxBytes:LIMIT,maxNodes:20000});strictJson(schema,{maxBytes:LIMIT,maxNodes:20000});
-  const report = validateJson(value,schema);
-  return {...report, errors:report.errors.map(error=>({...error, explanation:explainError(error)}))};
+  const budget={maxBytes:LIMIT,maxNodes:20000};
+  const parsedValue=strictJson(value,budget), parsedSchema=strictJson(schema,budget);
+  const schemaCheck=inspectFormSchema(parsedSchema);
+  const report=schemaCheck.valid?validateForm(parsedValue,parsedSchema):schemaCheck;
+  // Schema preflight failures are not input-field errors. Never attach a
+  // location in the wrong document. Missing keys point to their parent object.
+  const target=error=>error.code==='REQUIRED'?error.pointer.slice(0,error.pointer.lastIndexOf('/')):error.pointer;
+  const locations=schemaCheck.valid&&report.errors.length?locateJsonPointers(value,report.errors.map(target),budget):new Map();
+  return {...report, errors:report.errors.map(error=>{
+    const position=locations.get(target(error));
+    const suggestion=schemaCheck.valid&&error.code==='ADDITIONAL_PROPERTY'?suggestUnknownKey(parsedValue,parsedSchema,error.pointer):null;
+    return {...error, explanation:explainError(error),...(suggestion?{suggestedKey:suggestion}:{}),...(position?{location:{...position,kind:error.code==='REQUIRED'?'parent':'value'}}:{})};
+  })};
 }
 export async function readLocalText(file){
  if(!file||!Number.isInteger(file.size)||file.size<0||file.size>LIMIT)throw new RangeError("File exceeds 64 KiB");
@@ -69,6 +106,16 @@ function render(r){
     for(const item of (errors||list.filter(x=>!x.valid)).slice(0,10)){
       const li=document.createElement('li');
       li.textContent=errors?((item.path||'$')+' — '+(item.explanation||item.code)):('Record '+(Number.isInteger(item.index)?item.index+1:'?')+' — '+item.code);
+      if(errors&&item.suggestedKey)li.append(document.createTextNode(' · Possible key: '+item.suggestedKey+' (review before changing)'));
+      if(errors&&item.location){
+        const jump=document.createElement('button');jump.type='button';jump.className='issue-location';
+        jump.textContent=(item.location.kind==='parent'?'Parent at line ':'Line ')+item.location.line+', col '+item.location.column;
+        jump.addEventListener('click',()=>{
+          value.focus();value.setSelectionRange(item.location.offset,item.location.offset);
+          const rect=value.getBoundingClientRect();if(rect.top<0||rect.bottom>innerHeight)value.scrollIntoView({block:'nearest',behavior:'instant'});
+        });
+        li.append(document.createTextNode(' '),jump);
+      }
       ul.append(li);
     }
     summary.append(ul);

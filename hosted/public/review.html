@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer">
 <title>Check how rule changes affect real JSON fixtures — Form Path Explainer</title><meta name="description" content="Compare the previous and proposed validation rules using the same fixture array. Identify newly rejected and newly accepted inputs before rollout. No signup or input upload.">
 <link rel="canonical" href="https://form-path.eztoolgo.duckdns.org/review"><link rel="stylesheet" href="/review/style.css"></head><body>
-<main class="review-page"><nav aria-label="Product navigation"><a href="/">← Form Path Explainer</a> <a href="/try">Quick check</a></nav>
+<main class="review-page"><nav aria-label="Product navigation"><a href="/">← Form Path Explainer</a> <a href="/try">Quick check</a><a href="/api#plans">API plans</a></nav>
 <header><p class="eyebrow">Local review workspace</p><h1>Compare validation rules</h1><p>Find fixtures that change acceptance between two schemas. Local only · No upload.</p></header>
 <noscript><p>JavaScript is required. The same comparison is available in the next-release CLI candidate.</p></noscript>
 <div class="workspace review-workspace"><section class="panel"><h2>1. Prepare comparison</h2><details class="note"><summary>Example &amp; input guidance</summary><p>Example: a stricter minimum rejects one previously accepted fixture; other fixtures are unchanged.</p></details>
@@ -20,4 +20,4 @@
 <p class="note">Only the supported form-rule subset, not complete JSON Schema. Results describe 1–100 supplied fixtures, not universal compatibility. Resource-limited verdicts are indeterminate.</p></section></div>
 <section class="panel cli-panel"><h2>Catch breaking validation changes before an API release</h2><p>Repeat this related check in CI using the existing managed API. Preview call count free, then run with your own API key and a redacted release report.</p><a href="/automation">Get the automation runner</a></section><section class="panel cli-panel"><h2>3. Repeat in CI or on your computer</h2><p>Use the same comparison core in the next-release CLI candidate. Not a claim that the current registry package includes it.</p><pre>form-path-regression previous.json proposed.json fixtures.json</pre><p>Keep the previous delivery or rule revision and reviewed contract with your project. The browser report is a point-in-time result, not a signed attestation.</p></section>
 <footer><!-- optional-support --><a href="/">Product and hosted API</a><a href="/privacy">Privacy policy</a></footer></main>
-<script type="module" src="/review/tool.js"></script></body></html>
+<script type="module" src="/review/tool.js"></script><!-- ez-plans --></body></html>
